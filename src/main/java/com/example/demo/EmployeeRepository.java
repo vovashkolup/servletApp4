@@ -6,7 +6,7 @@ import java.util.List;
 
 public class EmployeeRepository {
 
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         getConnection();
 
         Employee employee = new Employee();
@@ -15,7 +15,7 @@ public class EmployeeRepository {
         employee.setEmail(" ");
         employee.setCountry(" ");
         save(employee);
-    }*/
+    }
 
     public static Connection getConnection() {
 
@@ -144,4 +144,44 @@ public class EmployeeRepository {
         }
         return listEmployees;
     }
+
+    public static List<Employee> getUsersByName(String name) throws SQLException {
+
+        List<Employee> listEmployees = new ArrayList<>();
+
+        try {
+            Connection connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("select * from users where name="+name);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                listEmployees.add(new Employee(rs.getInt(1),rs.getString(2),
+                        rs.getString(3),rs.getString(4)));
+
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listEmployees ;
+    }
+
+    public static void updateNameByID (int id,String name){
+
+        try {
+            Connection connection = EmployeeRepository.getConnection();
+            PreparedStatement ps = connection.prepareStatement("update users set name = "+name+" where id="+id);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
