@@ -5,6 +5,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Servlet implementation class LoginServlet
@@ -16,14 +18,27 @@ public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
         // Это название 2-х параметров, которые мы передаем
         String user = request.getParameter("user");
         String pwd = request.getParameter("pwd");
         // Это значение наших параметров
-        String userID = "admin";
+        String userID1 = "admin";
+        String userID2 = "manager";
+        String userID3 = "developer";
+
         String password = "password";
 
-        if (userID.equals(user) && password.equals(pwd)) {
+        Map<String, String> userMap=new HashMap<>();
+
+        userMap.put(userID1,password);
+        userMap.put(userID2,password);
+        userMap.put(userID3,password);
+
+
+
+
+        if (userMap.containsKey(user) && userMap.containsValue(pwd)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", "user");
             //setting session to expiry in 30 mins
